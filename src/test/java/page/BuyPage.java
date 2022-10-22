@@ -12,14 +12,19 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class BuyPage {
     private SelenideElement heading = $$("h3.heading").findBy(Condition.text("Оплата по карте"));
-    private ElementsCollection input = $$(".input_type_text");
-    private SelenideElement cardNumber = input.find(exactText("Номер карты")).$(".input__control");
-    private SelenideElement month = input.find(exactText("Месяц")).$(".input__control");
-    private SelenideElement year = input.find(exactText("Год")).$(".input__control");
-    private SelenideElement owner = input.find(exactText("Владелец")).$(".input__control");
-    private SelenideElement code = input.find(exactText("CVC/CVV")).$(".input__control");
+    private ElementsCollection inputTypeText = $$(".input_type_text");
+    private SelenideElement cardNumber = inputTypeText.find(exactText("Номер карты")).$(".input__control");
+    private SelenideElement month = inputTypeText.find(exactText("Месяц")).$(".input__control");
+    private SelenideElement year = inputTypeText.find(exactText("Год")).$(".input__control");
+    private SelenideElement owner = inputTypeText.find(exactText("Владелец")).$(".input__control");
+    private SelenideElement code = inputTypeText.find(exactText("CVC/CVV")).$(".input__control");
     private SelenideElement button = $$(".button span.button__text").find(exactText("Продолжить"));
     private SelenideElement notification = $(".notification__content");
+    private SelenideElement errorCardNumber = $(".input").shouldHave(text("Номер карты"));
+//    private SelenideElement errorMonth = input.find(exactText("Месяц")).$(".input__sub");
+//    private SelenideElement errorYear = input.find(exactText("Год")).$(".input__sub");
+//    private SelenideElement errorOwner = input.find(exactText("Владелец")).$(".input__sub");
+//    private SelenideElement errorCode = input.find(exactText("CVC/CVV")).$(".input__sub");
     public BuyPage() {
         heading.shouldBe(visible);
     }
@@ -30,12 +35,23 @@ public class BuyPage {
         year.setValue(cardInfo.getYear());
         owner.setValue(cardInfo.getOwner());
         code.setValue(cardInfo.getCode());
+    }
+
+    public void clickGoOn (DataHelper.CardInfo cardInfo){
+        inputData(cardInfo);
         button.click();
     }
 
-    public String approvedCard(DataHelper.CardInfo cardInfo){
-        inputData(cardInfo);
+    public String showNotification(DataHelper.CardInfo cardInfo){
+        clickGoOn(cardInfo);
         notification.shouldBe(Condition.visible, Duration.ofSeconds(15));
         return notification.text();
+    }
+
+    public String[] getErrors(DataHelper.CardInfo cardInfo){
+        clickGoOn(cardInfo);
+        String cardNumber = errorCardNumber.$(".input__sub").text();
+        String [] errors = {cardNumber};
+        return errors;
     }
 }

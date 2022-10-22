@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import page.SalesPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BuyTest {
@@ -18,18 +19,31 @@ public class BuyTest {
     }
 
     @Test
-    void happyPathBuy(){
+    void buyHappyPathApproved1(){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
         var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.approvedCard(approvedCard);
+        var notification = BuyPage.showNotification(approvedCard);
         assertEquals("Операция одобрена Банком.", notification);
     }
 
-//    @Test
-//    void happyPathCredit(){
-//        var salesPage = new SalesPage();
-//        var declinedCard = DataHelper.getDeclinedCard();
-//        var CreditPage = salesPage.getCreditPage();
-//    }
+    @Test
+    void buyHappyPathDeclinedCard2(){
+        var salesPage = new SalesPage();
+        var declinedCard = DataHelper.getDeclinedCard();
+        var BuyPage = salesPage.getBuyPage();
+        var notification = BuyPage.showNotification(declinedCard);
+        assertEquals("Ошибка! Банк отказал в проведении операции.", notification);
+    }
+
+    @Test
+    void buyAllEmpty3 (){
+        var salesPage = new SalesPage();
+        var emptyCard = DataHelper.getEmptyCard();
+        var buyPage = salesPage.getBuyPage();
+        var errors = buyPage.getErrors(emptyCard);
+
+        String[] excepted = {"Поле обязательно для заполнения"};
+        assertArrayEquals(excepted, errors);
+    }
 }
