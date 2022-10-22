@@ -43,7 +43,8 @@ public class BuyTest {
         var buyPage = salesPage.getBuyPage();
         var errors = buyPage.getErrors(emptyCard);
 
-        String[] excepted = {"Поле обязательно для заполнения"};
+        String[] excepted = {"Поле обязательно для заполнения", "Поле обязательно для заполнения",
+                "Поле обязательно для заполнения", "Поле обязательно для заполнения", "Поле обязательно для заполнения"};
         assertArrayEquals(excepted, errors);
     }
 }
