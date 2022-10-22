@@ -1,6 +1,8 @@
 package data;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.Value;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -18,6 +20,8 @@ public class DataHelper {
     }
 
     @Value
+    @Setter
+    @Getter
     public static class CardInfo {
         private String cardNumber;
         private String month;

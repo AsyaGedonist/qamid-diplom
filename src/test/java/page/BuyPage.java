@@ -49,13 +49,37 @@ public class BuyPage {
         return notification.text();
     }
 
-    public String[] getErrors(DataHelper.CardInfo cardInfo){
-        clickGoOn(cardInfo);
-        String cardNumber = errorCardNumber.$(".input__sub").text();
-        String month = errorMonth.$(".input__sub").text();
-        String year = errorYear.$(".input__sub").text();
-        String owner = errorOwner.$(".input__sub").text();
-        String code = errorCode.$(".input__sub").text();
+    public String getCardNumberError (){
+        String result = errorCardNumber.$(".input__sub").text();
+        return result;
+    }
+
+    public String getMonthError (){
+        String result = errorMonth.$(".input__sub").text();
+        return result;
+    }
+
+    public String getYearError (){
+        String result = errorYear.$(".input__sub").text();
+        return result;
+    }
+
+    public String getOwnerError (){
+        String result = errorOwner.$(".input__sub").text();
+        return result;
+    }
+
+    public String getCodeError (){
+        String result = errorCode.$(".input__sub").text();
+        return result;
+    }
+
+    public String[] getAllErrors(){
+        String cardNumber = getCardNumberError();
+        String month = getMonthError();
+        String year = getYearError();
+        String owner = getOwnerError();
+        String code = getCodeError();
         String [] errors = {cardNumber, month, year, owner, code};
         return errors;
     }
