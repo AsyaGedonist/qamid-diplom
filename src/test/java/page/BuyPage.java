@@ -83,4 +83,29 @@ public class BuyPage {
         String [] errors = {cardNumber, month, year, owner, code};
         return errors;
     }
+
+    public String getValueCardNumber(){
+        String result = cardNumber.getValue();
+        return result;
+    }
+
+    public String getValueMonth(){
+        String result = month.getValue();
+        return result;
+    }
+
+    public String getValueYear(){
+        String result = year.getValue();
+        return result;
+    }
+
+    public String getValueOwner(){
+        String result = owner.getValue();
+        return result;
+    }
+
+    public String getValueCode(){
+        String result = code.getValue();
+        return result;
+    }
 }
