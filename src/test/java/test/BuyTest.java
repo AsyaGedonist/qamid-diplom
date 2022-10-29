@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import page.BuyPage;
 import page.SalesPage;
 
 import javax.xml.crypto.Data;
@@ -27,18 +28,16 @@ public class BuyTest {
     void buyHappyPathApproved1(){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
-        var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.showNotification(approvedCard);
-        assertEquals("Операция одобрена Банком.", notification);
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(approvedCard, "Операция одобрена Банком.");
     }
 
     @Test
     void buyHappyPathDeclinedCard2(){
         var salesPage = new SalesPage();
         var declinedCard = DataHelper.getDeclinedCard();
-        var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.showNotification(declinedCard);
-        assertEquals("Ошибка! Банк отказал в проведении операции.", notification);
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(declinedCard, "Ошибка! Банк отказал в проведении операции.");
     }
 
     @Test
@@ -47,11 +46,11 @@ public class BuyTest {
         var emptyCard = DataHelper.getEmptyCard();
         var buyPage = salesPage.getBuyPage();
             buyPage.clickGoOn(emptyCard);
-        var errors = buyPage.getAllErrors();
-
-        String[] excepted = {"Поле обязательно для заполнения", "Поле обязательно для заполнения",
-                "Поле обязательно для заполнения", "Поле обязательно для заполнения", "Поле обязательно для заполнения"};
-        assertArrayEquals(excepted, errors);
+        buyPage.getCardNumberError("Поле обязательно для заполнения");
+        buyPage.getMonthError("Поле обязательно для заполнения");
+        buyPage.getYearError("Поле обязательно для заполнения");
+        buyPage.getOwnerError("Поле обязательно для заполнения");
+        buyPage.getCodeError("Поле обязательно для заполнения");
     }
 
     @ParameterizedTest
@@ -67,8 +66,7 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
             buyPage.clickGoOn(newCard);
-        var cardNumberError = buyPage.getCardNumberError();
-        assertEquals(expected, cardNumberError);
+        buyPage.getCardNumberError(expected);
     }
 
     @ParameterizedTest
@@ -101,9 +99,9 @@ public class BuyTest {
                 month, approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
             buyPage.clickGoOn(newCard);
-        var monthError = buyPage.getMonthError();
-        assertEquals(expected, monthError);
+        buyPage.getMonthError(expected);
     }
+
     @ParameterizedTest
     @CsvSource({
             "12, 123",
@@ -131,27 +129,48 @@ public class BuyTest {
         var approvedCard = DataHelper.getApprovedCard();
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 month, approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
-        var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.showNotification(newCard);
-        assertEquals("Операция одобрена Банком.", notification);
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(newCard, "Операция одобрена Банком.");
     }
 
     @ParameterizedTest
     @CsvSource({
             "Поле обязательно для заполнения, ",
-            "Неверный формат, 1",
-            "Неверно указан срок действия карты, 13",
-            "Неверно указан срок действия карты, 00"
+            "Неверный формат, 1"
     })
-    void buyYearValidation6_1234 (String expected, String year){
+    void buyYearValidation6_12 (String expected, String year){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
             buyPage.clickGoOn(newCard);
-        var yearError = buyPage.getYearError();
-        assertEquals(expected, yearError);
+        buyPage.getYearError(expected);
+    }
+
+    @Test
+    void buyYearValidation6_3 (){
+        var salesPage = new SalesPage();
+        var approvedCard = DataHelper.getApprovedCard();
+        var month = DataHelper.generateMonthYear(59, "MM");
+        var year = DataHelper.generateMonthYear(59, "yy");
+        var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
+                month, year, approvedCard.getOwner(), approvedCard.getCode());
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(newCard, "Операция одобрена Банком.");
+    }
+
+    @Test
+    void buyYearValidation6_4 (){
+        var salesPage = new SalesPage();
+        var approvedCard = DataHelper.getApprovedCard();
+        var month = DataHelper.generateMonthYear(61, "MM");
+        var year = DataHelper.generateMonthYear(61, "yy");
+        var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
+                month, year, approvedCard.getOwner(), approvedCard.getCode());
+        var buyPage = salesPage.getBuyPage();
+        buyPage.clickGoOn(newCard);
+        buyPage.getYearError("Неверно указан срок действия карты");
     }
 
     @ParameterizedTest
@@ -178,10 +197,10 @@ public class BuyTest {
         var approvedCard = DataHelper.getApprovedCard();
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), "26", approvedCard.getOwner(), approvedCard.getCode());
-        var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.showNotification(newCard);
-        assertEquals("Операция одобрена Банком.", notification);
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(newCard, "Операция одобрена Банком.");
     }
+
     @Test
     void buyOwnerValidation7_1 (){
         var salesPage = new SalesPage();
@@ -190,17 +209,15 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), "", approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.clickGoOn(newCard);
-        var ownerError = buyPage.getOwnerError();
-        assertEquals("Поле обязательно для заполнения", ownerError);
+        buyPage.getOwnerError("Поле обязательно для заполнения");
     }
+
     @ParameterizedTest
     @CsvSource({
-            "Anastasiia-.Anastasi, Anastasiia-.Anastasii",
-            "Anastasiia, Anastasiiaй",
             "Anastasiia, Anastasiia1",
             "Anastasiia, Anastasiia%",
     })
-    void buyOwnerValidation7_23 (String expected, String owner){
+    void buyOwnerValidation7_2 (String expected, String owner){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
@@ -210,18 +227,31 @@ public class BuyTest {
         var ownerValue = buyPage.getValueOwner();
         assertEquals(expected, ownerValue);
     }
-    @ParameterizedTest
-    @CsvSource({
-            "Anastasiia-.Anastas", "Anastasiia-.Anastasi"
-    })
-    void buyOwnerValidation7_45 (String owner){
+
+    @Test
+    void buyOwnerValidation7_3 (){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
+        var owner = DataHelper.generateName("en", 19);
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
-        var BuyPage = salesPage.getBuyPage();
-        var notification = BuyPage.showNotification(newCard);
-        assertEquals("Операция одобрена Банком.", notification);
+        var buyPage = salesPage.getBuyPage();
+        buyPage.showNotification(newCard, "Операция одобрена Банком.");
+    }
+
+    @Test
+    void buyOwnerValidation7_4 (){
+        var salesPage = new SalesPage();
+        var approvedCard = DataHelper.getApprovedCard();
+        var owner = DataHelper.generateName("en", 21);
+        var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
+                approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
+        var buyPage = salesPage.getBuyPage();
+        buyPage.inputData(newCard);
+        var ownerValue = buyPage.getValueOwner();
+
+        var expected = owner.length() < 20 ? owner : owner.substring(0, 20);
+        assertEquals(expected, ownerValue);
     }
 
     @ParameterizedTest
@@ -236,8 +266,7 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), approvedCard.getOwner(), code);
         var buyPage = salesPage.getBuyPage();
         buyPage.clickGoOn(newCard);
-        var codeError = buyPage.getCodeError();
-        assertEquals(expected, codeError);
+        buyPage.getCodeError(expected);
     }
 
     @ParameterizedTest

@@ -13,12 +13,12 @@ import static com.codeborne.selenide.Selenide.*;
 public class BuyPage {
     private SelenideElement heading = $$("h3.heading").findBy(Condition.text("Оплата по карте"));
     private ElementsCollection inputTypeText = $$(".input_type_text");
-    private SelenideElement cardNumber = inputTypeText.find(exactText("Номер карты")).$(".input__control");
-    private SelenideElement month = inputTypeText.find(exactText("Месяц")).$(".input__control");
-    private SelenideElement year = inputTypeText.find(exactText("Год")).$(".input__control");
-    private SelenideElement owner = inputTypeText.find(exactText("Владелец")).$(".input__control");
-    private SelenideElement code = inputTypeText.find(exactText("CVC/CVV")).$(".input__control");
-    private SelenideElement button = $$(".button span.button__text").find(exactText("Продолжить"));
+    private SelenideElement cardNumberField = inputTypeText.find(exactText("Номер карты")).$(".input__control");
+    private SelenideElement monthField = inputTypeText.find(exactText("Месяц")).$(".input__control");
+    private SelenideElement yearField = inputTypeText.find(exactText("Год")).$(".input__control");
+    private SelenideElement ownerField = inputTypeText.find(exactText("Владелец")).$(".input__control");
+    private SelenideElement codeField = inputTypeText.find(exactText("CVC/CVV")).$(".input__control");
+    private SelenideElement buttonGoOn = $$(".button span.button__text").find(exactText("Продолжить"));
     private SelenideElement notification = $(".notification__content");
     private ElementsCollection input = $$(".input");
     private SelenideElement errorCardNumber = input.findBy(text("Номер карты"));
@@ -31,81 +31,66 @@ public class BuyPage {
     }
 
     public void inputData(DataHelper.CardInfo cardInfo){
-        cardNumber.setValue(cardInfo.getCardNumber());
-        month.setValue(cardInfo.getMonth());
-        year.setValue(cardInfo.getYear());
-        owner.setValue(cardInfo.getOwner());
-        code.setValue(cardInfo.getCode());
+        cardNumberField.setValue(cardInfo.getCardNumber());
+        monthField.setValue(cardInfo.getMonth());
+        yearField.setValue(cardInfo.getYear());
+        ownerField.setValue(cardInfo.getOwner());
+        codeField.setValue(cardInfo.getCode());
     }
 
     public void clickGoOn (DataHelper.CardInfo cardInfo){
         inputData(cardInfo);
-        button.click();
+        buttonGoOn.click();
     }
 
-    public String showNotification(DataHelper.CardInfo cardInfo){
+    public void showNotification (DataHelper.CardInfo cardInfo, String expected){
         clickGoOn(cardInfo);
+        notification.shouldHave(text(expected));
         notification.shouldBe(Condition.visible, Duration.ofSeconds(15));
-        return notification.text();
     }
 
-    public String getCardNumberError (){
-        String result = errorCardNumber.$(".input__sub").text();
-        return result;
+    public void getCardNumberError (String expected){
+        errorCardNumber.$(".input__sub").shouldHave(text(expected));
     }
 
-    public String getMonthError (){
-        String result = errorMonth.$(".input__sub").text();
-        return result;
+    public void getMonthError (String expected){
+        errorMonth.$(".input__sub").shouldHave(text(expected));
     }
 
-    public String getYearError (){
-        String result = errorYear.$(".input__sub").text();
-        return result;
+    public void getYearError (String expected){
+        errorYear.$(".input__sub").shouldHave(text(expected));
     }
 
-    public String getOwnerError (){
-        String result = errorOwner.$(".input__sub").text();
-        return result;
+    public void getOwnerError (String expected){
+        errorOwner.$(".input__sub").shouldHave(text(expected));
     }
 
-    public String getCodeError (){
-        String result = errorCode.$(".input__sub").text();
-        return result;
-    }
-
-    public String[] getAllErrors(){
-        String cardNumber = getCardNumberError();
-        String month = getMonthError();
-        String year = getYearError();
-        String owner = getOwnerError();
-        String code = getCodeError();
-        String [] errors = {cardNumber, month, year, owner, code};
-        return errors;
+    public void getCodeError (String expected){
+        errorCode.$(".input__sub").shouldHave(text(expected));
     }
 
     public String getValueCardNumber(){
-        String result = cardNumber.getValue();
+        String result = cardNumberField.getValue();
         return result;
     }
 
     public String getValueMonth(){
-        String result = month.getValue();
+        String result = monthField.getValue();
         return result;
     }
 
     public String getValueYear(){
-        String result = year.getValue();
+        String result = yearField.getValue();
         return result;
     }
 
     public String getValueOwner(){
-        String result = owner.getValue();
+        String result = ownerField.getValue();
         return result;
     }
 
     public String getValueCode(){
-        String result = code.getValue();
+        String result = codeField.getValue();
         return result;
     }
 }
