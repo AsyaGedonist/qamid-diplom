@@ -13,7 +13,6 @@ import page.SalesPage;
 import javax.xml.crypto.Data;
 
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BuyTest {
