@@ -1,10 +1,10 @@
 package test;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DataHelper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import page.BuyPage;
@@ -17,6 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BuyTest {
 
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
     @BeforeEach
     void setup() {
 //        Configuration.holdBrowserOpen = true;
@@ -79,9 +87,9 @@ public class BuyTest {
         var newCard = new DataHelper.CardInfo(cardNumber,
                 approvedCard.getMonth(), approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
-            buyPage.inputData(newCard);
-        var cardNumberValue = buyPage.getValueCardNumber();
-        assertEquals(expected, cardNumberValue);
+
+        buyPage.inputData(newCard);
+        buyPage.checkValueCardNumber(expected);
     }
 
     @ParameterizedTest
@@ -114,9 +122,9 @@ public class BuyTest {
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 month, approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
+
         buyPage.inputData(newCard);
-        var monthValue = buyPage.getValueMonth();
-        assertEquals(expected, monthValue);
+        buyPage.checkValueMonth(expected);
     }
 
     @ParameterizedTest
@@ -126,8 +134,9 @@ public class BuyTest {
     void buyMonthValidation5_78 (String month){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
+        var year = DataHelper.generateMonthYear(12, "yy");
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
-                month, approvedCard.getYear(), approvedCard.getOwner(), approvedCard.getCode());
+                month, year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
     }
@@ -185,9 +194,9 @@ public class BuyTest {
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
-            buyPage.inputData(newCard);
-        var yearValue = buyPage.getValueYear();
-        assertEquals(expected, yearValue);
+
+        buyPage.inputData(newCard);
+        buyPage.checkValueYear(expected);
     }
 
     @Test
@@ -222,9 +231,9 @@ public class BuyTest {
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
+
         buyPage.inputData(newCard);
-        var ownerValue = buyPage.getValueOwner();
-        assertEquals(expected, ownerValue);
+        buyPage.checkValueOwner(expected);
     }
 
     @Test
@@ -247,10 +256,9 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.inputData(newCard);
-        var ownerValue = buyPage.getValueOwner();
 
         var expected = owner.length() < 20 ? owner : owner.substring(0, 20);
-        assertEquals(expected, ownerValue);
+        buyPage.checkValueOwner(expected);
     }
 
     @ParameterizedTest
@@ -281,8 +289,8 @@ public class BuyTest {
         var newCard = new DataHelper.CardInfo(approvedCard.getCardNumber(),
                 approvedCard.getMonth(), approvedCard.getYear(), approvedCard.getOwner(), code);
         var buyPage = salesPage.getBuyPage();
+
         buyPage.inputData(newCard);
-        var codeValue = buyPage.getValueCode();
-        assertEquals(expected, codeValue);
+        buyPage.checkValueCode(expected);
     }
 }

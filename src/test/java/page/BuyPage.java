@@ -50,47 +50,42 @@ public class BuyPage {
     }
 
     public void getCardNumberError (String expected){
-        errorCardNumber.$(".input__sub").shouldHave(text(expected));
+        errorCardNumber.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }
 
     public void getMonthError (String expected){
-        errorMonth.$(".input__sub").shouldHave(text(expected));
+        errorMonth.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }
 
     public void getYearError (String expected){
-        errorYear.$(".input__sub").shouldHave(text(expected));
+        errorYear.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }
 
     public void getOwnerError (String expected){
-        errorOwner.$(".input__sub").shouldHave(text(expected));
+        errorOwner.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }
 
     public void getCodeError (String expected){
-        errorCode.$(".input__sub").shouldHave(text(expected));
+        errorCode.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }
 
-    public String getValueCardNumber(){
-        String result = cardNumberField.getValue();
-        return result;
+    public void checkValueCardNumber(String expected){
+        cardNumberField.shouldHave(Condition.attribute("value", expected)).shouldBe(visible);
     }
 
-    public String getValueMonth(){
-        String result = monthField.getValue();
-        return result;
+    public void checkValueMonth(String expected){
+        monthField.shouldHave(Condition.attribute("value", expected)).shouldBe(visible);
     }
 
-    public String getValueYear(){
-        String result = yearField.getValue();
-        return result;
+    public void checkValueYear(String expected){
+        yearField.shouldHave(Condition.attribute("value", expected)).shouldBe(visible);
     }
 
-    public String getValueOwner(){
-        String result = ownerField.getValue();
-        return result;
+    public void checkValueOwner(String expected){
+        ownerField.shouldHave(Condition.attribute("value", expected)).shouldBe(visible);
     }
 
-    public String getValueCode(){
-        String result = codeField.getValue();
-        return result;
+    public void checkValueCode(String expected){
+        codeField.shouldHave(Condition.attribute("value", expected)).shouldBe(visible);
     }
 }
