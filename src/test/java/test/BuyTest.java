@@ -2,6 +2,7 @@ package test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import data.DataBaseHelper;
 import data.DataHelper;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
@@ -31,12 +32,18 @@ public class BuyTest {
         open("http://localhost:8080");
     }
 
+    @AfterEach
+    void cleanAll(){
+        DataBaseHelper.cleanAll();
+    }
+
     @Test
     void buyHappyPathApproved1(){
         var salesPage = new SalesPage();
         var approvedCard = DataHelper.getApprovedCard();
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(approvedCard, "Операция одобрена Банком.");
+        buyPage.getStatus("APPROVED");
     }
 
     @Test
@@ -45,6 +52,7 @@ public class BuyTest {
         var declinedCard = DataHelper.getDeclinedCard();
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(declinedCard, "Ошибка! Банк отказал в проведении операции.");
+        buyPage.getStatus("DECLINED");
     }
 
     @Test
@@ -139,6 +147,7 @@ public class BuyTest {
                 month, year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
+        buyPage.getStatus("APPROVED");
     }
 
     @ParameterizedTest
@@ -166,6 +175,7 @@ public class BuyTest {
                 month, year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
+        buyPage.getStatus("APPROVED");
     }
 
     @Test
@@ -207,6 +217,7 @@ public class BuyTest {
                 approvedCard.getMonth(), "26", approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
+        buyPage.getStatus("APPROVED");
     }
 
     @Test
@@ -245,6 +256,7 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
+        buyPage.getStatus("APPROVED");
     }
 
     @Test

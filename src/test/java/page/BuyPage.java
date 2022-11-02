@@ -3,6 +3,7 @@ package page;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import data.DataBaseHelper;
 import data.DataHelper;
 
 import java.time.Duration;
@@ -45,8 +46,12 @@ public class BuyPage {
 
     public void showNotification (DataHelper.CardInfo cardInfo, String expected){
         clickGoOn(cardInfo);
-        notification.shouldHave(text(expected));
-        notification.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        notification.shouldHave(text(expected), Duration.ofSeconds(15));
+        notification.shouldBe(Condition.visible);
+    }
+
+    public void getStatus(String expected){
+        DataBaseHelper.getStatus().equals(expected);
     }
 
     public void getCardNumberError (String expected){
