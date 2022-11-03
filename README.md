@@ -21,8 +21,8 @@ Docker-compose: container mysql
 ### Установка и запуск
 
 1. Открыть проект в IDEA
-2. Запустить DOCKER
-3. Запуск docker-compose.yml
-4. Запуск artifacts/aqa-shop.jar
-5. Запуск тестов BuyTest
-6. Запуск тестов CreditTest
+2. Открыть программу DOCKER
+3. Запуск docker-compose.yml - команда в терминале: docker-compose up
+4. Запуск artifacts/aqa-shop.jar - команда: java -jar ./artifacts/aqa-shop.jar
+5. Запуск тестов BuyTest - открыть тестовый класс "BuyTest" cntrl-shift-R
+6. Запуск тестов CreditTest 
