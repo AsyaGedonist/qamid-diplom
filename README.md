@@ -32,6 +32,6 @@ Docker-compose: container mysql
 
 1. План тестирования - https://github.com/AsyaGedonist/qamid-diplom/blob/bafad05f3830f053cd886ee83a02b17f8a443962/Plan.md
 2. Issue по итогам ручного тестирования - https://github.com/AsyaGedonist/qamid-diplom/issues
-3. Отчет по итогам тестирования - 
-4. Отчет по итогам автоматизации - 
+3. Отчет по итогам тестирования - jetbrains://idea/navigate/reference?project=qamid-diplom-tamonova&path=Report Doc/Report.md
+4. Отчет по итогам автоматизации - https://github.com/AsyaGedonist/qamid-diplom/blob/1f34d5722c7815eff6ae80e0afd8be72d6b28e68/Report%20Doc/Summary.md
 
