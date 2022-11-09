@@ -15,8 +15,4 @@ public class SalesPage {
         buyButton.click();
         return new BuyPage();
     }
-    public CreditPage getCreditPage(){
-        creditButton.click();
-        return new CreditPage();
-    }
 }

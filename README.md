@@ -24,5 +24,14 @@ Docker-compose: container mysql
 2. Открыть программу DOCKER
 3. Запуск docker-compose.yml - команда в терминале: docker-compose up
 4. Запуск artifacts/aqa-shop.jar - команда: java -jar ./artifacts/aqa-shop.jar
-5. Запуск тестов BuyTest - открыть тестовый класс "BuyTest" cntrl-shift-R
-6. Запуск тестов CreditTest 
+5. Открыть тестовый класс "BuyTest" - команда: open src/test/java/test/BuyTest.java
+6. Запуск тестов - команда: ctrl-shift-R
+6. Просмотр отчетов Allure по итогам тестирования - ctrl-ctrl =>  gradlew allureServe
+
+### Документы проекта
+
+1. План тестирования - https://github.com/AsyaGedonist/qamid-diplom/blob/bafad05f3830f053cd886ee83a02b17f8a443962/Plan.md
+2. Issue по итогам ручного тестирования - https://github.com/AsyaGedonist/qamid-diplom/issues
+3. Отчет по итогам тестирования
+4. Отчет по итогам автоматизации 
+

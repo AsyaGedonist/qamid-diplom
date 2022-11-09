@@ -50,10 +50,6 @@ public class BuyPage {
         notification.shouldBe(Condition.visible);
     }
 
-    public void getStatus(String expected){
-        DataBaseHelper.getStatus().equals(expected);
-    }
-
     public void getCardNumberError (String expected){
         errorCardNumber.$(".input__sub").shouldHave(text(expected)).shouldBe(visible);
     }

@@ -43,7 +43,7 @@ public class BuyTest {
         var approvedCard = DataHelper.getApprovedCard();
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(approvedCard, "Операция одобрена Банком.");
-        buyPage.getStatus("APPROVED");
+        assertEquals(DataBaseHelper.getStatus(), "APPROVED");
     }
 
     @Test
@@ -52,7 +52,7 @@ public class BuyTest {
         var declinedCard = DataHelper.getDeclinedCard();
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(declinedCard, "Ошибка! Банк отказал в проведении операции.");
-        buyPage.getStatus("DECLINED");
+        assertEquals(DataBaseHelper.getStatus(), "DECLINED");
     }
 
     @Test
@@ -147,7 +147,7 @@ public class BuyTest {
                 month, year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
-        buyPage.getStatus("APPROVED");
+        assertEquals(DataBaseHelper.getStatus(), "APPROVED");
     }
 
     @ParameterizedTest
@@ -175,7 +175,7 @@ public class BuyTest {
                 month, year, approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
-        buyPage.getStatus("APPROVED");
+        assertEquals(DataBaseHelper.getStatus(), "APPROVED");
     }
 
     @Test
@@ -217,7 +217,7 @@ public class BuyTest {
                 approvedCard.getMonth(), "26", approvedCard.getOwner(), approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
-        buyPage.getStatus("APPROVED");
+        assertEquals(DataBaseHelper.getStatus(), "APPROVED");
     }
 
     @Test
@@ -256,7 +256,7 @@ public class BuyTest {
                 approvedCard.getMonth(), approvedCard.getYear(), owner, approvedCard.getCode());
         var buyPage = salesPage.getBuyPage();
         buyPage.showNotification(newCard, "Операция одобрена Банком.");
-        buyPage.getStatus("APPROVED");
+        assertEquals(DataBaseHelper.getStatus(), "APPROVED");
     }
 
     @Test
